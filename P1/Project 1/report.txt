@@ -1,0 +1,25 @@
+How many registered voters were surveyed? 0
+How many of them say they will vote for Hillary? 1
+How many of them say they will vote for Donald? 1
+
+inf% say they will vote for Hillary.
+inf% say they will vote for Donald.
+Donald is predicted to win the election.
+Program ended with exit code: 0
+
+Explanation: Total number of voters is not equal to number of voters for Hillary + number of voters for Donald, creating nonsensical results.
+
+--------------------------------------------------------------------
+
+double pctHillary = 100.0 * forDonald / numberSurveyed;
+
+Explanation: should be multiplying by forHillary
+
+--------------------------------------------------------------------
+
+#include <iostream>
+
+Explanation: removed the #include, so the cin and cout does not work
+
+}
+Explanation: the int main () {} is unclosed, so cannot be built

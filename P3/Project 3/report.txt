@@ -1,0 +1,32 @@
+a. 
+Some notable obstacles include dealing with stateForecasts of length 4 as well as length 5, and utilizing string methods such as stoi() and substr().
+
+b. 
+Check if the pollData is correctly formatted by dividing it up into stateForecasts and checking those. Checks stateForecasts for the correct order, length, statecode, votes, and partycode. Iterates through each stateForecast and if the party matches, adds the votes to voteCount. 
+
+Return 1 for incorrect syntax of pollData. Return 2 for votes of 0. Return 3 if party isn’t a letter. Otherwise, return 0. Passes the voteCount by reference. 
+
+Some pseudocode:
+
+function countVotes
+	store a copy of voteCount in case we later find out that there is an error
+	set pollData to all uppercase
+	if pollData has incorrect syntax, return 1
+	set party to all uppercase
+	if party is invalid, return 3
+	loop
+		figure out if stateForecast is length 4 or 5
+		if predicted votes is 0, return 2
+		otherwise, if the corresponding party, then add predicted votes to voteCount
+	
+c.
+countVotes("TXAR", 'R', votesR) - if non-polldata, returns 1
+countVotes("TX0R", 'R', votesR) - if 0 votes, returns 2
+countVotes("TX33R", '3', votesR) - if non-alpha party, returns 3
+countVotes(" TX38RCA55", 'd', votesR) - if invalid with spaces before
+countVotes("TX38R CA55", 'd', votesR) - if invalid with spaces inbetween
+countVotes("TX38RCA55D ", 'd', votesR) - if invalid with spaces after
+countVotes("tx38rca55d", ‘r’, votesR) - if valid with lowercase
+votesR = -999; countVotes("tx38rca55d", ‘r’, votesR) - if it sets votesR to 0 before adding
+votesR = -999; countVotes("tx0rca55d", ‘r’, votesR) - if doesn’t change votesR
+countVotes("", 'R', votesR) - if “”, returns 0
