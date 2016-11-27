@@ -1,0 +1,181 @@
+1.
+a.
+int main()
+{
+	int arr[3] = { 5, 10, 15 };
+	int* ptr = arr;
+
+	*ptr = 30;          // set arr[0] to 30
+	ptr++;
+	*ptr = 20;      // set arr[1] to 20
+	ptr++;
+	ptr[0] = 10;        // set arr[2] to 10
+	ptr--;
+	ptr--;
+
+	while (ptr < arr + 3)
+	{
+		cout << *ptr << endl;    // print values
+		ptr++;
+	}
+}
+
+b.
+param "int* pToMax" receives a copy of a pointer, this copy is being changed in the function; fixed by changing to "int* &pToMax" so that it receives a reference to a pointer, allowing the function to change the original pointer
+void findMax(int arr[], int n, int* &pToMax)
+{
+    if (n <= 0)
+        return;      // no items, no maximum!
+    
+    pToMax = arr;
+    
+    for (int i = 1; i < n; i++)
+    {
+        if (arr[i] > *pToMax)
+            pToMax = arr + i;
+    }
+}
+
+int main()
+{
+    int nums[4] = { 5, 3, 15, 6 };
+    int* ptr;
+    
+    findMax(nums, 4, ptr);
+    cout << "The maximum is at address " << ptr << endl;
+    cout << "It's at position " << ptr - nums << endl;
+    cout << "Its value is " << *ptr << endl;
+}
+
+c.
+variable "ptr" in the main was a pointer when the function computeCube receives a pointer, so "ncubed" was trying to point to the address of a pointer; fixed by giving the pointer an address to an int
+void computeCube(int n, int* ncubed)
+{
+    *ncubed = n * n * n;
+}
+
+int main()
+{
+    int ptr;
+    computeCube(5, &ptr);
+    cout << "Five cubed is " << ptr << endl;
+}
+
+d.
+is comparing pointers, not the content of the address; fixed by making them compare the content
+bool strequal(const char str1[], const char str2[])
+{
+    while (*str1 != 0  &&  *str2 != 0)
+    {
+        if (*str1 != *str2)  // compare corresponding characters
+            return false;
+        str1++;            // advance to the next character
+        str2++;
+    }
+    return *str1 == *str2;   // both ended at same time?
+}
+
+int main()
+{
+    char a[15] = "Zhao";
+    char b[15] = "Zhao";
+    
+    if (strequal(a,b))
+        cout << "They're the same person!\n";
+}
+
+e.
+getPtrToArray returns address of local array, which is removed at the end of the function
+
+2.
+double* cat;//a
+double mouse[5];//b
+cat = mouse + 4;//c
+*cat = 25;//d
+*(mouse + 3) = 42;//e
+------cat;//f
+cat[1] = 54;//g
+cat[0] = 17;//h
+bool b = *cat == *++cat;//i
+bool d = --cat == mouse;//j
+
+3.
+a.
+double mean(const double* scores, int numScores)
+{
+    int inc = 0;
+    double tot = 0;
+    while (inc != numScores)
+    {
+        tot += *(scores + inc);
+        inc++;
+    }
+    return tot/numScores;
+}
+
+b.
+const char* findTheChar(const char* str, char chr)
+{
+    for (int k = 0; *(str + k) != 0; k++)
+        if (*(str + k) == chr){;
+            return str + k;
+        }
+    return nullptr;
+}
+
+c.
+const char* findTheChar(const char str[], char chr)
+{
+    
+    for (; *str != 0;)
+        if (*str == chr)
+            return str;
+        else
+            str++;
+    
+    return nullptr;
+}
+
+d.
+int main()
+{
+    int array[6] = { 5, 3, 4, 17, 22, 19 };
+    
+    int* ptr = maxwell(array, &array[2]);
+    *ptr = -1;
+    ptr += 2;
+    ptr[1] = 9;
+    *(array+1) = 79;
+    
+    cout << &array[5] - ptr << endl;//is 3 bc when you subtract the address &array[5] from ptr, you get 3; this is bc maxwell(array, &array[2]) sets ptr to point to the larger value between 5 and 4, so ptr points to array[0]; then, ptr += 2 moves the pointer 2 positions forward to array[2], so &array[5] - a pointer to array[2] is 3
+    swap1(&array[0], &array[1]);
+    swap2(array, &array[2]);
+    
+    for (int i = 0; i < 6; i++)
+        cout << array[i] << endl;   //array[0] is 4 bc swap2(array, &array[2]) swaps array[0] and array[2]
+                                    //array[1] is 79 bc *(array+1) = 79 is the same as array[1] = 79; swap1 does not do anything because it only acts on local copies of the pointer, not the actual objects they point to
+                                    //array[2] is -1 bc maxwell(array, &array[2]) sets ptr to point to the larger value between 5 and 4, so ptr points to array[0], then *ptr = -1 sets array[0] to -1, then swap2(array, &array[2]) swaps array[0] and array[2], so array[2]  is -1;
+                                    //array[3] is 9 bc ptr is at array[0] bc maxwell, then array[2] bc ptr+=2, then array[3] = 9 bc ptr[1] = 9 (so one position beyond array[2] is array[3])
+                                    //array[4] is 22 bc array is initialized like that
+                                    //array[5] is 19 bc array is initialized like that
+}
+
+e.
+void removeS(char* p){
+    while (*p != 0){
+        if (*p == 's' || *p == 'S'){
+            char* temp = p;
+            while (*p != 0){
+                *p = *(p+1);
+                p++;
+            }
+            p = temp;
+        }
+        p++;
+    }
+}
+
+
+
+
+
